@@ -70,8 +70,21 @@ docker run -d --name haproxy --restart always \
 
 - 확인 방법
   docker exec -it server_1 bash
-  touch health
+
   python3 -m http.server 8080
+  # 컨테이너 안에서 간단하게 8080 포트로 서버를 띄움
+  # 이 상태에서 실행을 하고, 웹브라우저에서 확인을 하며 "503 Service Unavailable"이 뜨고, 파이썬으로 띄운 서버는 404 에러
+
+  touch health
+  # 파이썬 웹서비스를 중지하고, 컨테이너 안에서 health 파일 만든 다음에 다시 파이썬 웹서비스를 띄우면 정상적으로 디렉토리 보임
+  # 이것은 server_1에서만 health 파일은 만든 것으로 haproxy 입장에서는 한 서버만 살아있는 상태이므로 server_2도 동일하게 health 파일 만들어 줘야 함
+  # 또한, haproxy에서 확인을 위해서는 2서버 모두 (여기서는 간단하게) 파이썬을 이용한 웹서비스를 올려줘야 함.
+  # 최초에 -d 옵션으로 컨테이너를 띄운 상태에서 다시 동일 컨테이너에 -d 옵션으로 명령을 줘도 적용이 됨
+  # 즉, 추가적으로 다음과 같이 웹서비스를 올리기 위해 추가 명령을 실행해도 됨.
+  # docker exec -d server_1 python3 -m http.server 8080
+  # 추가 프로세스를 죽이기 위해서는 해당 컨테이너에 진입한 다음에 kill 명령어 적용
+  # root@server_1:/# netstat -lnp
+  # root@server_1:/# kill -9 342
 
 **********************************************************************************************
 * cicd 설치
