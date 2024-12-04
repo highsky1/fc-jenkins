@@ -41,8 +41,8 @@
 **********************************************************************************************
 * haproxy 설치
 
-  mkdir ~/practice/haproxy
-  cat > ~/practice/haproxy/haproxy.cfg << EOF
+  mkdir ~/workspace/practice/haproxy
+  cat > ~/workspace/practice/haproxy/haproxy.cfg << EOF
 defaults
   mode http
   timeout client 10s
