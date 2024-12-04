@@ -1,9 +1,10 @@
 * 실습을 위한 패스 생성 및 이동
-    mkdir ~/practice; cd ~/practice
+    mkdir ~/workspace/practice && $_
 
 * SSH 키 생성
 
     docker run --rm -it --entrypoint /keygen.sh linuxserver/openssh-server
+    # 실행하면 key가 생성되고 컨테이너는 사라짐
 
     ~/practice/key/private.key 에 private key 를
     ~/practice/key/public.key 에 public key 저장
@@ -18,13 +19,16 @@
 * server_1 / server_2 실행
 
     docker run -d --rm --name=server_1 --hostname=server_1 \
-         -v ~/practice/key:/key \
+         -v ~/workspace/practice/key:/key \
          -e PUBLIC_KEY_FILE=/key/public.key -e SUDO_ACCESS=true -e USER_NAME=user  \
          --network=practice \
          lscr.io/linuxserver/openssh-server:latest
 
+    # -d와 --rm을 같이 사용하면, 백그라운드로 돌다가 docker stop을 하면 컨테이너 삭제시킴
+    # 테스트를 계속해야 하니깐 --rm 옵션 제외하고 실행
+
     docker run -d --rm --name=server_2 --hostname=server_2 \
-         -v ~/practice/key:/key \
+         -v ~/workspace/practice/key:/key \
          -e PUBLIC_KEY_FILE=/key/public.key -e SUDO_ACCESS=true -e USER_NAME=user  \
          --network=practice \
          lscr.io/linuxserver/openssh-server:latest
@@ -77,6 +81,8 @@ docker run -d --rm --name=cicd \
      --hostname=cicd \
      --network=practice \
      gradle:7.6.1-jdk17 sleep 9999999999
+
+# --rm 옵션 제외하고 실행
 
 docker exec cicd apt-get update
 docker exec cicd apt-get install -y vim
