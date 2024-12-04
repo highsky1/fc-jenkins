@@ -65,7 +65,7 @@ EOF
 docker run -d --name haproxy --restart always \
          --network practice \
          -p 8081:8080 \
-         -v ~/practice/haproxy:/usr/local/etc/haproxy \
+         -v ~/workspace/practice/haproxy:/usr/local/etc/haproxy \
          haproxy
 
 - 확인 방법
@@ -77,7 +77,7 @@ docker run -d --name haproxy --restart always \
 * cicd 설치
 
 docker run -d --rm --name=cicd \
-     -v ~/practice/key/:/key \
+     -v ~/workspace/practice/key/:/key \
      --hostname=cicd \
      --network=practice \
      gradle:7.6.1-jdk17 sleep 9999999999
