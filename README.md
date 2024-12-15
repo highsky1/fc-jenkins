@@ -1,8 +1,7 @@
 # fastcampus-jenkins
 # highsky-jenkins
 
-PR 테스트 재실행2
+PR 테스트
 
 
-hook trigger 테스트1
 
